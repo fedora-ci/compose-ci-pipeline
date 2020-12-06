@@ -62,10 +62,8 @@ pipeline {
         stage('Execute compose') {
             steps {
                 script {
-                    // TODO: SET NVR from task id.
-                    def NVR = ""
                     run_compose_status = sh(returnStatus: true, script: """
-                    ./scripts/run-compose --compose-name compose-ci --compose-branch master --build ${NVR}
+                    ./scripts/run-compose --compose-name compose-ci --compose-branch master --artifact-id ${artifactId}
                     """)
                     assert run_compose_status == 0 : "Compose build failed"
                 }
