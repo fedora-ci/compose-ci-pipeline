@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+from odcs.client.odcs import ODCS, AuthMech, ComposeSourceRawConfig
+import logging
+import os
+import argparse
+import sys
+
+parser = argparse.ArgumentParser(description='')
+parser.add_argument("--compose-name", "-c", dest="compose_name", required=True,
+                    help="Compose name")
+parser.add_argument("--compose-branch", "-b", dest="compose_branch", required=True,
+                    help="Compose name")
+parser.add_argument("--builds", "-n", dest="builds", required=False,
+                    action="append", help="Brew build nvr")
+parser.add_argument("--token-file", "-t", dest="token_file", required=True,
+                    help="File with oidc token.")
+args = parser.parse_args()
+
+
+# Set local logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+
+def get_odcs_token(self, odcs_file):
+    if os.path.exists(odcs_file):
+        f = open(odcs_file, "r")
+        token = f.readline()
+        return token
+    else:
+        logger.error('ODCS token file is missing.')
+
+
+def run_compose(self, odcs_token):
+    odcs = ODCS(self.odcs_url,
+                auth_mech=AuthMech.OpenIDC,
+                openidc_token=odcs_token)
+    source = ComposeSourceRawConfig(args.compose_name, args.compose_branch, builds=args.builds)
+
+    compose_info = odcs.request_compose(source)
+    logger.info(compose_info)
+    return compose_info
+
+
+odcs_token = get_odcs_token(args.token_file)
+result = run_compose(odcs_token)
+result = client.wait_for_compose(result["id"], 3600, watch_logs=True)
+print(result)
+if result["state_name"] != "done":
+    sys.exit(1)
