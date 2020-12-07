@@ -46,14 +46,13 @@ def run_compose(odcs_token):
                 openidc_token=odcs_token)
     source = ComposeSourceRawConfig(args.compose_name, args.compose_branch, builds=builds)
 
-    compose_info = odcs.request_compose(source)
-    logger.info(compose_info)
-    return compose_info
+    result = odcs.request_compose(source)
+    result = odcs.wait_for_compose(result["id"], 3600, watch_logs=True)
+    return result
 
 
 odcs_token = os.environ.get("ODCS_API_KEY") or get_odcs_token(args.token_file)
 result = run_compose(odcs_token)
-result = client.wait_for_compose(result["id"], 3600, watch_logs=True)
 print(result)
 if result["state_name"] != "done":
     sys.exit(1)
