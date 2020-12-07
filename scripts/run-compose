@@ -14,7 +14,7 @@ parser.add_argument("--compose-branch", "-b", dest="compose_branch", required=Tr
                     help="Compose name")
 parser.add_argument("--artifact-id", "-a", dest="artifacts_ids", required=False,
                     action="append", help="Brew build nvr")
-parser.add_argument("--token-file", "-t", dest="token_file", required=True,
+parser.add_argument("--token-file", "-t", dest="token_file", required=False,
                     help="File with oidc token.")
 args = parser.parse_args()
 
