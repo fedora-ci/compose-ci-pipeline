@@ -51,7 +51,7 @@ def run_compose(self, odcs_token):
     return compose_info
 
 
-odcs_token = get_odcs_token(args.token_file)
+odcs_token = os.environ.get("ODCS_API_KEY") or get_odcs_token(args.token_file)
 result = run_compose(odcs_token)
 result = client.wait_for_compose(result["id"], 3600, watch_logs=True)
 print(result)
