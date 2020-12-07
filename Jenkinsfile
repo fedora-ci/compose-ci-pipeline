@@ -30,7 +30,7 @@ pipeline {
     agent {
         kubernetes {
             yaml podYAML
-            defaultContainer 'koji'
+            defaultContainer 'odcs'
         }
     }
 
