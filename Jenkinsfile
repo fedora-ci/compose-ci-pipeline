@@ -28,8 +28,10 @@ spec:
 pipeline {
 
     agent {
-        label 'compose-ci'
-        defaultContainer 'odcs'
+        kubernetes {
+            yaml podYAML
+            defaultContainer 'koji'
+        }
     }
 
     options {
