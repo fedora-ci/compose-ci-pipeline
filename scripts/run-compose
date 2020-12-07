@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-def get_odcs_token(self, odcs_file):
+def get_odcs_token(odcs_file):
     if os.path.exists(odcs_file):
         f = open(odcs_file, "r")
         token = f.readline()
@@ -33,7 +33,7 @@ def get_odcs_token(self, odcs_file):
         logger.error('ODCS token file is missing.')
 
 
-def run_compose(self, odcs_token):
+def run_compose(odcs_token):
     builds = []
     if args.artifact_ids:
         infra = koji.ClientSession('https://koji.fedoraproject.org/kojihub')
