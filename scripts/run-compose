@@ -41,7 +41,7 @@ def run_compose(odcs_token):
             _, task_id = artifact_id.split(":")
             build = infra.listBuilds(taskID=int(task_id))[0]
             builds.append(build["nvr"])
-    odcs = ODCS(self.odcs_url,
+    odcs = ODCS("https://odcs.fedoraproject.org",
                 auth_mech=AuthMech.OpenIDC,
                 openidc_token=odcs_token)
     source = ComposeSourceRawConfig(args.compose_name, args.compose_branch, builds=builds)
