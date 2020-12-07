@@ -20,16 +20,17 @@ def xunit
 def podYAML = """
 spec:
   containers:
-  - name: pipeline-agent
-    # source: https://github.com/fedora-ci/jenkins-pipeline-library-agent-image
-    image: quay.io/fedoraci/pipeline-library-agent:candidate
+  - name: odcs
+    image: quay.io/jkaluza/odcs:latest
     tty: true
-    alwaysPullImage: true
 """
 
 pipeline {
 
-    agent { label 'compose-ci' }
+    agent {
+        label 'compose-ci'
+        defaultContainer 'odcs'
+    }
 
     options {
         buildDiscarder(logRotator(daysToKeepStr: '45', artifactNumToKeepStr: '100'))
