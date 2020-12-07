@@ -37,7 +37,7 @@ def run_compose(odcs_token):
     builds = []
     if args.artifacts_ids:
         infra = koji.ClientSession('https://koji.fedoraproject.org/kojihub')
-        for artifact_id in artifacts_ids:
+        for artifact_id in args.artifacts_ids:
             _, task_id = artifact_id.split(":")
             build = infra.listBuilds(taskID=int(task_id))[0]
             builds.append(build["nvr"])
